@@ -18,7 +18,7 @@ ln -s ~/dotfiles/init.vim ~/.config/nvim/init.vim
 ln -s ~/dotfiles/ftplugin ~/.config/nvim/ftplugin
 # install Plug
 mkdir .config/nvim/autoload
-curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 # install plugins
 nvim +PlugInstall +qall
