@@ -30,7 +30,6 @@ set directory=$HOME/.vim/swapfiles//
 set swapfile
 set undodir=$HOME/.vim/undo-dir
 set undofile
-let g:python3_host_prog = '/usr/local/bin/python3'
 
 " Set tabbing to 2 (for personal projects)
 set tabstop=2 shiftwidth=2 softtabstop=2 expandtab smarttab
