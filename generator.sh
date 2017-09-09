@@ -1,3 +1,4 @@
+#!/bin/bash
 # install linux brew
 sudo apt-get install build-essential curl file git python-setuptools ruby
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
