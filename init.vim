@@ -5,15 +5,18 @@ call plug#begin('~/.config/nvim/bundle')
 Plug 'kien/ctrlp.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'scrooloose/nerdtree'
-Plug 'Shougo/deoplete.nvim'
-Plug 'slashmili/alchemist.vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'sheerun/vim-polyglot'
-Plug 'NLKNguyen/papercolor-theme'
 Plug 'jeetsukumaran/vim-buffergator'
+Plug 'scrooloose/nerdtree'
 Plug 'vimwiki/vimwiki'
+Plug 'Shougo/deoplete.nvim'
 Plug 'w0rp/ale'
+Plug 'airblade/vim-gitgutter'
+Plug 'powerman/vim-plugin-AnsiEsc'
+Plug 'slashmili/alchemist.vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'fatih/vim-go'
+Plug 'alvan/vim-closetag'
+Plug 'sjl/badwolf'
 call plug#end()
 
 filetype plugin indent on    " required
@@ -31,7 +34,6 @@ let g:python3_host_prog = '/usr/local/bin/python3'
 
 " Set tabbing to 2 (for personal projects)
 set tabstop=2 shiftwidth=2 softtabstop=2 expandtab smarttab
-autocmd Filetype elm setlocal ts=4 sts=4 sw=4 expandtab smarttab
 
 map <C-n> :NERDTreeToggle<CR>
 
@@ -42,22 +44,13 @@ set inccommand=nosplit
 set showtabline=2
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme='powerlineish'
+let g:airline_theme='minimalist'
 set laststatus=2
 
 " Setup deoplete for neovim
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 let g:min_pattern_length = 2
-" elm deoplete
-let g:deoplete#omni#functions = {}
-let g:deoplete#omni#sources = {}
-let g:deoplete#omni#sources._ = ['file', 'neosnippet']
-let g:deoplete#omni#input_patterns = {}
-
-let g:deoplete#omni#functions.elm = ['elm#Complete']
-let g:deoplete#omni#input_patterns.elm = '\.'
-let g:deoplete#omni#sources.elm = ['omni'] + g:deoplete#omni#sources._
 
 let g:buffergator_show_full_directory_path = 0
 
@@ -71,15 +64,16 @@ nmap <Leader>j <Plug>VimwikiDiaryNextDay
 imap <C-Space> <Esc>
 " Try the following so Shift-Space also enters insert mode.
 nmap <C-Space> i
-nmap <Leader>s :bp<CR>
-nmap <Leader>d :bd<CR>
-nmap <Leader>f :bn<CR>
+nmap <C-s> :bp<CR>
+nmap <C-d> :bd<CR>
+nmap <C-f> :bn<CR>
 
 set t_ut=
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-let g:PaperColor_Dark_Override = { 'background' : '#1c1c1c', 'cursorline' : '#abcdef', 'matchparen' : '#3a3a3a', 'comment' : '#5f875f' }
-colorscheme PaperColor
+let g:badwolf_darkgutter = 1
+colorscheme goodwolf
 set background=dark
+set guicursor=
 set number
 set relativenumber
 augroup number_line_controls
@@ -89,7 +83,7 @@ augroup number_line_controls
   autocmd InsertLeave * :set relativenumber
 augroup end
 set cursorline
-highlight CursorLine cterm=none ctermbg=235
+highlight CursorLine cterm=none ctermbg=234
 " highlight Pmenu ctermfg=0 ctermbg=230
 " highlight LineNr cPlugin 'sjl/badwolf'termfg=66 ctermbg=236
 set mouse=a
@@ -100,24 +94,14 @@ match ExtraWhitespace /\s\+$/
 " Remove whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
 
-" elixir setup
-augroup elixir_setup
-  autocmd FileType elixir nmap <Leader>t :Mix test<CR>
-augroup end
+" Ale settings
+nmap <silent> <Leader>e <Plug>(ale_detail)
 
-" elm setup
-let g:elm_setup_keybindings = 0
-augroup elm_vim_setup
-  autocmd FileType elm nmap <Leader>m :ElmMake<CR>
-  autocmd FileType elm nmap <Leader>r :ElmRepl<CR>
-  autocmd FileType elm nmap <Leader>e :ElmErrorDetail<CR>
-  autocmd FileType elm nmap <Leader>t :ElmTest<CR>
-  autocmd FileType elm nmap <Leader>q :ElmShowDocs<CR>
-  autocmd FileType elm nmap <Leader>w :ElmBrowseDocs<CR>
-augroup end
-let g:elm_detailed_complete = 1
-" elm auto-format
-let g:elm_format_autosave = 1
+" Gitgutter settings
+let g:gitgutter_signs = 0
+
+" Close tag settings
+let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.js"
 
 " folding settings
 set foldmethod=syntax
