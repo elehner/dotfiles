@@ -1,17 +1,21 @@
 #!/bin/bash
 # install linux brew
-apt-get install build-essential curl file git python-setuptools ruby
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
-test -d ~/.linuxbrew && PATH="$HOME/.linuxbrew/bin:$PATH"
-test -d /home/linuxbrew/.linuxbrew && PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
-test -r ~/.bash_profile && echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.bash_profile
-echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.profile
+#apt-get install build-essential curl file git python-setuptools ruby
+#ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install)"
+#test -d ~/.linuxbrew && PATH="$HOME/.linuxbrew/bin:$PATH"
+#test -d /home/linuxbrew/.linuxbrew && PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+#test -r ~/.bash_profile && echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.bash_profile
+#echo 'export PATH="$(brew --prefix)/bin:$PATH"' >>~/.profile
 
 # turn off analytics
-brew analytics off
+#brew analytics off
 
 ### neovim
-brew install neovim
+#brew install neovim and python
+sudo apt-get install software-properties-common
+sudo add-apt-repository ppa:neovim-ppa/stable
+sudo apt-get update
+sudo apt-get install neovim
 # install neovim dotfiles
 mkdir -p .config/nvim
 ln -s ~/dotfiles/init.vim ~/.config/nvim/init.vim
@@ -20,11 +24,15 @@ ln -s ~/dotfiles/ftplugin ~/.config/nvim/ftplugin
 mkdir .config/nvim/autoload
 curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+# install python and plugins
+sudo apt-get install python-dev python-pip python3-dev python3-pip
+sudo pip2 install --upgrade neovim
+sudo pip3 install --upgrade neovim
 # install plugins
 nvim +PlugInstall +qall
 
 ### tmux
-brew install tmux
+sudo apt-get install tmux
 # install tpm
 mkdir -p .tmux/plugins
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm

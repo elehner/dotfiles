@@ -1,22 +1,32 @@
-set nocompatible              " be iMproved, required
 filetype off                  " required
 
 call plug#begin('~/.config/nvim/bundle')
-Plug 'kien/ctrlp.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'jeetsukumaran/vim-buffergator'
-Plug 'scrooloose/nerdtree'
 Plug 'vimwiki/vimwiki'
 Plug 'Shougo/deoplete.nvim'
 Plug 'w0rp/ale'
+Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
 Plug 'powerman/vim-plugin-AnsiEsc'
-Plug 'slashmili/alchemist.vim'
-Plug 'sheerun/vim-polyglot'
-Plug 'fatih/vim-go'
+Plug 'junegunn/fzf.vim'
 Plug 'alvan/vim-closetag'
 Plug 'sjl/badwolf'
+Plug 'whatyouhide/vim-gotham'
+Plug 'slashmili/alchemist.vim'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'sheerun/vim-polyglot'
+Plug 'rust-lang/rust.vim'
+Plug 'racer-rust/vim-racer'
+" Clojure setup
+Plug 'clojure-vim/async-clj-omni'
+Plug 'tpope/vim-fireplace'
+Plug 'guns/vim-sexp'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
+" Haskell setup
+Plug 'eagletmt/neco-ghc'
+
 call plug#end()
 
 filetype plugin indent on    " required
@@ -46,10 +56,16 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme='minimalist'
 set laststatus=2
 
+" Go lang setup
+" Turn off polyglot to prevent issues with go package
+let g:polyglot_disabled = ['go']
+
 " Setup deoplete for neovim
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 let g:min_pattern_length = 2
+let g:haskellmode_completion_ghc = 0
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 
 let g:buffergator_show_full_directory_path = 0
 
@@ -59,10 +75,6 @@ imap <C-a> <Home>
 imap <C-e> <End>
 nmap <Leader>k <Plug>VimwikiDiaryPrevDay
 nmap <Leader>j <Plug>VimwikiDiaryNextDay
-" Press Shift-Space (may not work on your system).
-imap <C-Space> <Esc>
-" Try the following so Shift-Space also enters insert mode.
-nmap <C-Space> i
 nmap <C-s> :bp<CR>
 nmap <C-d> :bd<CR>
 nmap <C-f> :bn<CR>
@@ -70,9 +82,8 @@ nmap <C-f> :bn<CR>
 set t_ut=
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let g:badwolf_darkgutter = 1
-colorscheme goodwolf
+colorscheme gotham256
 set background=dark
-set guicursor=
 set number
 set relativenumber
 augroup number_line_controls
@@ -85,16 +96,20 @@ set cursorline
 highlight CursorLine cterm=none ctermbg=234
 " highlight Pmenu ctermfg=0 ctermbg=230
 " highlight LineNr cPlugin 'sjl/badwolf'termfg=66 ctermbg=236
+set list listchars=tab:\|_,trail:-
+let g:indentLine_showFirstIndentLevel=1
+let g:indentLine_leadingSpaceEnabled=1
+let g:indentLine_leadingSpaceChar='_'
 set mouse=a
 
-" highlight whitespace
-highlight ExtraWhitespace ctermbg=darkgray
-match ExtraWhitespace /\s\+$/
 " Remove whitespace on save
 autocmd BufWritePre * %s/\s\+$//e
 
 " Ale settings
 nmap <silent> <Leader>e <Plug>(ale_detail)
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_fix_on_save = 1
+let g:ale_linters = { 'cljs': ['joker'], 'elixir': []}
 
 " Gitgutter settings
 let g:gitgutter_signs = 0
@@ -107,3 +122,4 @@ set foldmethod=syntax
 set foldnestmax=10      "deepest fold is 10 levels
 set nofoldenable        "dont fold by default
 set foldlevel=1         "this is just what i use
+
