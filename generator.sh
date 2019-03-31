@@ -12,12 +12,9 @@
 
 ### neovim
 #brew install neovim and python
-sudo apt-get install software-properties-common
-sudo add-apt-repository ppa:neovim-ppa/stable
-sudo apt-get update
-sudo apt-get install neovim
+brew install neovim
 # install neovim dotfiles
-mkdir -p .config/nvim
+mkdir -p ~/.config/nvim
 ln -s ~/dotfiles/init.vim ~/.config/nvim/init.vim
 ln -s ~/dotfiles/ftplugin ~/.config/nvim/ftplugin
 # install Plug
@@ -25,14 +22,14 @@ mkdir .config/nvim/autoload
 curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 # install python and plugins
-sudo apt-get install python-dev python-pip python3-dev python3-pip
-sudo pip2 install --upgrade neovim
-sudo pip3 install --upgrade neovim
+brew install python
+pip2 install --upgrade neovim
+pip3 install --upgrade neovim
 # install plugins
 nvim +PlugInstall +qall
+nvim +UpdateRemotePlugins +qall
 
 ### tmux
-sudo apt-get install tmux
 # install tpm
 mkdir -p .tmux/plugins
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
@@ -41,3 +38,6 @@ ln -s ~/dotfiles/.tmux.conf ~/.tmux.conf
 tmux source ~/.tmux.conf
 # install tpm modules
 ~/.tmux/plugins/tpm/bin/install_plugins
+
+### bash settings
+cat ~/dotfiles/bashrcn >> ~/.bashrc
