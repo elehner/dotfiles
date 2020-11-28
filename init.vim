@@ -5,27 +5,21 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'jeetsukumaran/vim-buffergator'
 Plug 'vimwiki/vimwiki'
-Plug 'Shougo/deoplete.nvim'
 Plug 'w0rp/ale'
 Plug 'Yggdroot/indentLine'
 Plug 'airblade/vim-gitgutter'
 Plug 'powerman/vim-plugin-AnsiEsc'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'alvan/vim-closetag'
-Plug 'sjl/badwolf'
+Plug 'nvim-treesitter/nvim-treesitter'
 Plug 'whatyouhide/vim-gotham'
-Plug 'slashmili/alchemist.vim'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'sheerun/vim-polyglot'
-Plug 'rust-lang/rust.vim'
-Plug 'racer-rust/vim-racer'
-" Clojure setup
-Plug 'clojure-vim/async-clj-omni'
-Plug 'tpope/vim-fireplace'
-Plug 'guns/vim-sexp'
-Plug 'tpope/vim-sexp-mappings-for-regular-people'
-" Haskell setup
-Plug 'eagletmt/neco-ghc'
+Plug 'haishanh/night-owl.vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'preservim/nerdtree'
+Plug 'HerringtonDarkholme/yats.vim'
+" JS setup
+Plug 'prettier/vim-prettier', {'do': 'yarn install', 'branch': 'release/0.x'}
 
 call plug#end()
 
@@ -41,8 +35,15 @@ set swapfile
 set undodir=$HOME/.vim/undo-dir
 set undofile
 
+" Setup fzf
+nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <Leader>p :Rg<CR>
+let g:fzf_buffers_jump = 1
+autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+
 " Set tabbing to 2 (for personal projects)
 set tabstop=2 shiftwidth=2 softtabstop=2 expandtab smarttab
+let g:vim_jsx_pretty_colorful_config = 1
 
 map <C-n> :NERDTreeToggle<CR>
 
@@ -56,13 +57,6 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme='minimalist'
 set laststatus=2
 
-" Go lang setup
-" Turn off polyglot to prevent issues with go package
-let g:polyglot_disabled = ['go']
-
-" Setup deoplete for neovim
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_smart_case = 1
 let g:min_pattern_length = 2
 let g:haskellmode_completion_ghc = 0
 autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
@@ -79,11 +73,10 @@ nmap <C-s> :bp<CR>
 nmap <C-d> :bd<CR>
 nmap <C-f> :bn<CR>
 
-set t_ut=
+set termguicolors
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-let g:badwolf_darkgutter = 1
-colorscheme gotham256
-set background=dark
+syntax enable
+colorscheme night-owl
 set number
 set relativenumber
 augroup number_line_controls
@@ -122,4 +115,15 @@ set foldmethod=syntax
 set foldnestmax=10      "deepest fold is 10 levels
 set nofoldenable        "dont fold by default
 set foldlevel=1         "this is just what i use
+
+" Enable tree-sitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    disable = { "c", "rust" },  -- list of language that will be disabled
+  },
+}
+EOF
 
